@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
+const { MONGO_DB_URL } = require("./config");
 
-mongoose.connect(
-  "mongodb+srv://shubham1bcabnc18:jIvA7RnaWyg83VSx@cluster0.ac6ncn2.mongodb.net/Paytm"
-);
+mongoose.connect(MONGO_DB_URL);
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -32,8 +31,22 @@ const UserSchema = new mongoose.Schema({
     maxLength: 50,
   },
 });
-const User = mongoose.model("User", UserSchema);
+
+const accountSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  balance: {
+    type: Number,
+    required: true,
+  },
+});
+const Account = mongoose.model("Account", accountSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = {
   User,
+  Account,
 };
